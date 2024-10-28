@@ -97,7 +97,7 @@ export class EntityFactory<Entity, Context> {
       throw new Error('Could not found entity')
     }
 
-    let entity = await this.resolveEntity(this.factory(faker, this.context), isSeeding)
+    let entity: Entity = await this.resolveEntity(this.factory(faker, this.context), isSeeding)
     if (this.mapFunction) {
       entity = await this.mapFunction(entity)
     }
