@@ -81,25 +81,25 @@ Then for each entity define a factory. The purpose of a factory is to create new
 
 ```typescript
 // user.factory.ts
-define(User, (faker: typeof Faker) => {
-  const gender = faker.datatype.number(1)
-  const firstName = faker.name.firstName(gender)
-  const lastName = faker.name.lastName(gender)
+define(User, (faker: Faker) => {
+  const gender = faker.number.int(1) === 0 ? 'male' : 'female';
+  const firstName = faker.person.firstName(gender)
+  const lastName = faker.person.lastName(gender)
 
   const user = new User()
   user.name = `${firstName} ${lastName}`
-  user.password = faker.random.word()
+  user.password = faker.internet.password();
   return user
 })
 
 // pet.factory.ts
-define(Pet, (faker: typeof Faker) => {
-  const gender = faker.datatype.number(1)
-  const name = faker.name.firstName(gender)
+define(Pet, (faker: Faker) => {
+  const gender = faker.number.int(1) === 0 ? 'male' : 'female'
+  const name = faker.person.firstName(gender)
 
   const pet = new Pet()
   pet.name = name
-  pet.age = faker.datatype.number()
+  pet.age = faker.number.int()
   pet.user = factory(User)() as any
   return pet
 })
@@ -132,12 +132,6 @@ After that install the extension with `npm` or `yarn`.
 npm i typeorm-seeding
 # or
 yarn add typeorm-seeding
-```
-
-Optional, install the type definitions of the `Faker` library.
-
-```bash
-npm install -D @types/faker
 ```
 
 ### Configuration
@@ -246,11 +240,11 @@ define: <Entity, Context>(entity: Entity, factoryFn: FactoryFunction<Entity, Con
 ```
 
 ```typescript
-import Faker from 'faker'
+import { Faker } from '@faker-js/faker'
 import { define } from 'typeorm-seeding'
 import { User } from '../entities'
 
-define(User, (faker: typeof Faker, context: { roles: string[] }) => { ... })
+define(User, (faker: Faker, context: { roles: string[] }) => { ... })
 ```
 
 ### `factory`
